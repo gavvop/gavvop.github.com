@@ -10,15 +10,24 @@ const loadMainFooter = function(cb, el = '#mainFooter', footer = '../footer.html
     loadHtmlFile(el, footer, cb);
 }
 const validHtmlFile = function(url) {
-    return url !== "#" && url.indexOf('javascript:') === -1 && url.indexOf("(") === -1
+    return url[0] === '.' && url !== "#" && url.indexOf('javascript:') === -1 && url.indexOf("(") === -1
+}
+const loadSyntaxHighlight = function() {
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+    });
 }
 const hookLinks = function(contentEl) {
-    $('a').on('click', function(evt) {
-        evt.preventDefault();
+    $('a').off('click');
 
+    $('a').on('click', function(evt) {
         let url = $(this).attr('href');
         if(validHtmlFile(url)) {
-            loadHtmlFile(contentEl, url);
+            evt.preventDefault();
+            loadHtmlFile(contentEl, url, function() {
+                hookLinks(contentEl);
+                loadSyntaxHighlight();
+            });
         }
     });
 }
@@ -29,15 +38,7 @@ $(document).ready(function() {
 
     loadMainHeader(function() {
         loadMainFooter(function() {
-            $('a').on('click', function(evt) {
-                evt.preventDefault();
-        
-                let url = $(this).attr('href');
-                if(validHtmlFile(url)) {
-                    loadHtmlFile(contentEl, url);
-                }
-            });
-
+            hookLinks(contentEl);
         });
     });
 });
