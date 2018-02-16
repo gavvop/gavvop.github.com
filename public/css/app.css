@@ -1,0 +1,20 @@
+
+@font-face {
+    font-family: Merriweather;
+    src: url(./font/Merriweather-Regular.otf);
+}
+
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: #e6e6e6;
+    font-family: "Merriweather", Georgia, "Times New Roman", serif;
+}
+
+#mainContent {
+    background-color: #fff;
+}
