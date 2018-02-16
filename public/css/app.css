@@ -4,7 +4,6 @@
     src: url(./font/Merriweather-Regular.otf);
 }
 
-
 html {
     height: 100%;
 }
@@ -17,4 +16,15 @@ body {
 
 #mainContent {
     background-color: #fff;
+}
+
+.margin-top-10 {
+    padding-top: 10px;
+}
+
+.job-title {
+    color: #339966;
+}
+.job-company {
+    color: #3366ff;
 }

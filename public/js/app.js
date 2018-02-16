@@ -1,23 +1,43 @@
 
-const loadHtmlFile = function(el, file) {
-    $(el).load(file);
+const loadHtmlFile = function(el, file, cb = function() { }) {
+    $(el).load(file, cb);
 }
 
-const loadHeader = function(el = '#mainHeader', header = '../header.html') {
-    loadHtmlFile(el, header);
+const loadMainHeader = function(cb, el = '#mainHeader', header = '../header.html') {
+    loadHtmlFile(el, header, cb);
 }
-const loadFooter = function(el = '#mainFooter', footer = '../footer.html') {
-    loadHtmlFile(el, footer);
+const loadMainFooter = function(cb, el = '#mainFooter', footer = '../footer.html') {
+    loadHtmlFile(el, footer, cb);
 }
-
-$(document).ready(function() {
-    loadHeader();
-    loadFooter();
-
+const validHtmlFile = function(url) {
+    return url !== "#" && url.indexOf('javascript:') === -1 && url.indexOf("(") === -1
+}
+const hookLinks = function(contentEl) {
     $('a').on('click', function(evt) {
         evt.preventDefault();
 
         let url = $(this).attr('href');
-        console.log(url);
+        if(validHtmlFile(url)) {
+            loadHtmlFile(contentEl, url);
+        }
+    });
+}
+
+$(document).ready(function() {
+
+    const contentEl = $('#mainContent');
+
+    loadMainHeader(function() {
+        loadMainFooter(function() {
+            $('a').on('click', function(evt) {
+                evt.preventDefault();
+        
+                let url = $(this).attr('href');
+                if(validHtmlFile(url)) {
+                    loadHtmlFile(contentEl, url);
+                }
+            });
+
+        });
     });
 });
