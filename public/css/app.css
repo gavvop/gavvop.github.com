@@ -28,3 +28,11 @@ body {
 .job-company {
     color: #3366ff;
 }
+
+.experience-image {
+    width: 60%;
+    height: auto;
+}
+.experience-title {
+    color: #854042;
+}
