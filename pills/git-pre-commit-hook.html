@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-sm-8 offset-md-2 margin-top-10 text-center">
+        <h3>Modify sudoers with errors</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8 offset-md-2 margin-top-10">
+        <h4>Default hooks path</h4>
+        <pre><code class="bash">&lt;your-git-project&gt;/.git/hooks/</code></pre>
+        <h4>My pre-commit script</h4>
+        <pre><code class="bash">(&lt;your-git-project&gt;/.git/hooks/pre-commit)</code></pre>
+        <pre>
+            <code class="bash">#!/bin/sh
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+# Pattern to search
+marker="FIXME"
+exec 1>&2
+if test $(git diff --cached -z $against | grep $marker | wc -c) != 0 
+then
+    echo 'Error: there are FIXME comments in your project'
+    echo `git diff --cached -z $against -G $marker`
+    exit 1
+fi
+        </code></pre>
+        <h4>Output from Bash</h4>
+        <pre><code class="bash">
+paolo@orgyen:~/Documents/dev/mygit
+$ git commit -m "Test 2"
+Error: there are FIXME comments in your project
+diff --git a/test.txt b/test.txt new file mode 100644 index 0000000..50194fc --- /dev/null +++ b/test.txt @@ -0,0 +1 @@ +Test FIXME
+        </code></pre>
+        <h4>Output from SourceTree</h4>
+        <img class="img-fluid" src="../public/img/pills/sourcetree-pre-commit-hook.png" alt="git pre commit hook" />
+        <h4>Reference</h4>
+        <ul>
+            <li><a target='_blank' href="https://medium.com/@onmyway133/check-before-you-commit-5a7601cffc87">Check before you commit</a></li>
+            <li><a target='_blank' href="https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks">Git Hooks</a></li>
+        </ul>
+    </div>
+</div>
